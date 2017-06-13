@@ -130,11 +130,11 @@ namespace WeixinTookeen.Client
 
         private void 添加文本ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //MetroTaskWindow.ShowTaskWindow(this, "文本信息窗口", new MessaeControl());
-            MessageType type = new MessageType();
-            type.SendType = "文本";
-            type.TxtContent = "你好哈";
-            BindGrad(type);
+            MetroTaskWindow.ShowTaskWindow(this, "文本信息窗口", new MessaeControl());
+            //MessageType type = new MessageType();
+            //type.SendType = "文本";
+            //type.TxtContent = "你好哈";
+            //BindGrad(type);
         }
 
         private void 添加图片ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -184,6 +184,12 @@ namespace WeixinTookeen.Client
             this.CheckFemale.Checked = true;
             MessageTypeServices sevice = new MessageTypeServices();
             GridMessageContent.DataSource = sevice.GetNewMessage();
+            AllCity city = new AllCity();
+            List<City> cityList = city.GetAllCity();
+            var data= cityList.Where(a => a.Pid == 0);
+            cmbSheng.DataSource = cityList.Where(a => a.Pid == 0);
+            cmbSheng.ValueMember = "Id";
+            cmbSheng.DisplayMember = "Name";
         }
 
         /// <summary>

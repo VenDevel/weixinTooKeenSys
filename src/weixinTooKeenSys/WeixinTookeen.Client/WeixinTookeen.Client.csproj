@@ -118,6 +118,7 @@
     <Compile Include="Https\HttpServer.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\City.cs" />
+    <Compile Include="Model\Dto\AllCity.cs" />
     <Compile Include="Model\Mapping\CityMapping.cs" />
     <Compile Include="Model\Mapping\MessageTypeMapping.cs" />
     <Compile Include="Model\MessageType.cs" />

@@ -28,10 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.txtMessage = new MetroFramework.Controls.MetroTextBox();
             this.metroTile1 = new MetroFramework.Controls.MetroTile();
-            this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
+            // 
+            // metroButton1
+            // 
+            this.metroButton1.Location = new System.Drawing.Point(218, 138);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(91, 28);
+            this.metroButton1.TabIndex = 2;
+            this.metroButton1.Text = "确 定";
+            this.metroButton1.UseSelectable = true;
             // 
             // txtMessage
             // 
@@ -74,15 +83,6 @@
             this.metroTile1.Text = "输入你要发送的文字：";
             this.metroTile1.UseSelectable = true;
             // 
-            // metroButton1
-            // 
-            this.metroButton1.Location = new System.Drawing.Point(218, 138);
-            this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(91, 28);
-            this.metroButton1.TabIndex = 2;
-            this.metroButton1.Text = "确 定";
-            this.metroButton1.UseSelectable = true;
-            // 
             // MessaeControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -99,7 +99,7 @@
         #endregion
 
         private MetroFramework.Controls.MetroTextBox txtMessage;
-        private MetroFramework.Controls.MetroTile metroTile1;
         private MetroFramework.Controls.MetroButton metroButton1;
+        private MetroFramework.Controls.MetroTile metroTile1;
     }
 }

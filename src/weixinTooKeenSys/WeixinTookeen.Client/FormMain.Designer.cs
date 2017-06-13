@@ -637,6 +637,7 @@
             this.cmbSheng.Size = new System.Drawing.Size(78, 29);
             this.cmbSheng.TabIndex = 5;
             this.cmbSheng.UseSelectable = true;
+            this.cmbSheng.SelectedValueChanged += new System.EventHandler(this.cmbSheng_SelectedValueChanged);
             // 
             // metroLabel4
             // 

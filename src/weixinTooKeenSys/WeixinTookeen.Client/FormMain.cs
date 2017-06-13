@@ -1,4 +1,5 @@
-﻿using MetroFramework.Forms;
+﻿using MetroFramework;
+using MetroFramework.Forms;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,10 @@ namespace WeixinTookeen.Client
     {
         private static List<object> _contact_all = new List<object>();
         private static List<WXUser> contact_all = new List<WXUser>();
+        //发送日志
+        public event EventHandler SendSucess;
+        //关闭窗体
+        public event EventHandler ColoseWin;
         /// <summary>
         /// 当前登录微信用户
         /// </summary>
@@ -32,9 +37,64 @@ namespace WeixinTookeen.Client
             FromInit();
         }
 
+        public void SendMessage()
+        {
+            var messageData = GetCheckMessage();
+            if (messageData.Count<=0)
+            {
+                MetroMessageBox.Show(this, "请选择要发送的信息！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            InitSend();
+
+        }
+
+        private void InitSend()
+        {
+            SendLogFrom from = new SendLogFrom(this);
+            from.Show();
+            ExecEven("正初化发送信息设置！", null);
+        }
+
+        private void FilterOjb()
+        {
+            var sendOjb = contact_all;
+            if (!checkMale.Checked)
+            {
+                sendOjb = sendOjb.Where(a => a.Sex == "1").ToList();
+            }
+            if (!CheckFemale.Checked)
+            {
+                sendOjb = sendOjb.Where(a => a.Sex == "2").ToList();
+            }
+            if (!CheckGroup.Checked)
+            {
+                sendOjb = sendOjb.Where(a => a.Sex == "2").ToList();
+            }
+            if (!CheckPublicAccount.Checked)
+            {
+                sendOjb = sendOjb.Where(a => a.Sex == "2").ToList();
+            }
+        }
 
 
+        /// <summary>
+        /// 发送日志
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="e"></param>
+        private void ExecEven(string message,EventArgs e)
+        {
+            if (SendSucess !=null)
+            {
+                SendSucess(this,e);
+            }
+        }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void GetLoginQRCode()
         {
             picQRCode.Image = null;
@@ -130,27 +190,39 @@ namespace WeixinTookeen.Client
 
         private void 添加文本ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MetroTaskWindow.ShowTaskWindow(this, "文本信息窗口", new MessaeControl());
-            //MessageType type = new MessageType();
-            //type.SendType = "文本";
-            //type.TxtContent = "你好哈";
-            //BindGrad(type);
+            SelectDataForm selectForm = new SelectDataForm("请输入要发送的文字信息：","文本");
+            if(selectForm.ShowDialog() == DialogResult.OK)
+            {
+                MessageType type = new MessageType();
+                type.SendType = "文本";
+                type.TxtContent = SelectDataForm.returnValue;
+                BindGrad(type);
+            }
+
         }
 
         private void 添加图片ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageType type = new MessageType();
-            type.SendType = "图片";
-            type.TxtContent = "你好哈";
-            BindGrad(type);
+            SelectDataForm selectForm = new SelectDataForm("请拖入发送的图片信息（只支持JPG格式）：", "图片");
+            if (selectForm.ShowDialog() == DialogResult.OK)
+            {
+                MessageType type = new MessageType();
+                type.SendType = "图片";
+                type.TxtContent = SelectDataForm.returnValue;
+                BindGrad(type);
+            }
         }
 
         private void 添加视频ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageType type = new MessageType();
-            type.SendType = "视频";
-            type.TxtContent = "你好哈";
-            BindGrad(type);
+            SelectDataForm selectForm = new SelectDataForm("请拖入发送的视频信息（只支持MP4格式）：", "视频");
+            if (selectForm.ShowDialog() == DialogResult.OK)
+            {
+                MessageType type = new MessageType();
+                type.SendType = "视频";
+                type.TxtContent = SelectDataForm.returnValue;
+                BindGrad(type);
+            }
         }
 
         /// <summary>
@@ -178,18 +250,28 @@ namespace WeixinTookeen.Client
             return listMsgType;
         }
 
+        /// <summary>
+        /// 初始化窗体
+        /// </summary>
         private void FromInit()
         {
             this.checkMale.Checked = true;
             this.CheckFemale.Checked = true;
             MessageTypeServices sevice = new MessageTypeServices();
             GridMessageContent.DataSource = sevice.GetNewMessage();
-            AllCity city = new AllCity();
-            List<City> cityList = city.GetAllCity();
-            var data= cityList.Where(a => a.Pid == 0);
-            cmbSheng.DataSource = cityList.Where(a => a.Pid == 0);
+            List<City> cityList = AllCity.allCityData;
+            var data = cityList.Where(a => a.Pid == 0).ToList();
+            data.Insert(0, new City() { Id = 0, Name = "全部" });
+            cmbSheng.DataSource = data;
             cmbSheng.ValueMember = "Id";
             cmbSheng.DisplayMember = "Name";
+            cmbSheng.SelectedIndex = 0;
+            var data2 = new List<City>();
+            data2.Insert(0, new City() { Id = 0, Name = "全部" });
+            cmbShi.DataSource = data2;
+            cmbShi.ValueMember = "Id";
+            cmbShi.DisplayMember = "Name";
+            cmbShi.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -282,7 +364,28 @@ namespace WeixinTookeen.Client
         private void metroButton1_Click(object sender, EventArgs e)
         {
             MessageTypeServices sevice = new MessageTypeServices();
-            sevice.SetMessage(GetCheckMessage());
+            var data = GetCheckMessage();
+            if (data.Count<=0)
+            {
+                return;
+            }
+            sevice.SetMessage(data);
+        }
+
+        private void cmbSheng_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var index = this.cmbSheng.SelectedIndex;
+            if (index == 0)
+            {
+                return;
+            }
+            List<City> cityList = AllCity.allCityData;
+            var list = cityList.Where(a => a.Pid == index).ToList();
+            list.Insert(0, new City() { Id = 0, Name = "全部" });
+            cmbShi.DataSource = list;
+            cmbShi.ValueMember = "Id";
+            cmbShi.DisplayMember = "Name";
+            cmbShi.SelectedIndex = 0;
         }
     }
 }

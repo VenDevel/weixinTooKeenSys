@@ -1,11 +1,13 @@
 ﻿using MetroFramework;
 using MetroFramework.Forms;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,6 +17,7 @@ using WeixinTookeen.Client.Https;
 using WeixinTookeen.Client.Model;
 using WeixinTookeen.Client.Model.Dto;
 using WeixinTookeen.Client.Services;
+using wxRobot.Util.Enums;
 
 namespace WeixinTookeen.Client
 {
@@ -32,49 +35,180 @@ namespace WeixinTookeen.Client
         private static WXUser _me;
         public FormMain()
         {
+            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
             GetLoginQRCode();
             FromInit();
+            this.panInit.Visible = false;
         }
 
         public void SendMessage()
         {
             var messageData = GetCheckMessage();
-            if (messageData.Count<=0)
+            if (messageData.Count <= 0)
             {
                 MetroMessageBox.Show(this, "请选择要发送的信息！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            InitSend();
-
-        }
-
-        private void InitSend()
-        {
+            ServiceRecordSvc svc = new ServiceRecordSvc();
+            var Authdata = svc.IsAuth();
+            if (Authdata.Code== ResultCodeEnums.AuthExpire)
+            {
+                MetroMessageBox.Show(this, Authdata.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             SendLogFrom from = new SendLogFrom(this);
+            from.Left = this.Left + this.Width;
+            from.Top = this.Top;
             from.Show();
             ExecEven("正初化发送信息设置！", null);
+            List<WXUser> list = FilterOjb();
+            ExecEven(string.Format("一共获取了{0}个好友，此次将发送给{1}个好友", contact_all.Count(), list.Count()), null);
+            SendText(list, messageData);
+            SendImage(list, messageData);
+            SendViedo(list, messageData);
+            ExecEvenColse("", null);
+            svc.SetRecord();
+            GetLoginQRCode();
         }
 
-        private void FilterOjb()
+        private void SendText(List<WXUser> list, List<MessageType> message)
+        {
+            WXMesssage msg = new WXMesssage();
+            //发消息
+            var sendMsg = message.Where(a => a.SendType == "文本").FirstOrDefault();
+            if (null != sendMsg)
+            {
+                for (int i = 1; i <= list.Count; i++)
+                {
+                    if ((i % 200) == 0)
+                    {
+                        Thread.Sleep(60 * 1000);
+                    }
+                    msg.From = _me.UserName;
+                    msg.Readed = false;
+                    msg.To = list[i - 1].UserName;
+                    msg.Time = DateTime.Now;
+                    msg.Type = 1;
+                    msg.Msg = sendMsg.TxtContent;
+                    _me.SendMsg(msg);
+                    var semdLog = string.Format("{0}\t已发{1}信息给{2}", DateTime.Now.ToString(), list[i - 1].NickName, sendMsg.SendType);
+                    ExecEven(semdLog, null);
+                }
+            }
+        }
+        private void SendImage(List<WXUser> list, List<MessageType> message)
+        {
+            WXMesssage msg = new WXMesssage();
+            var sendImage = message.Where(a => a.SendType == "图片").FirstOrDefault();
+            if (null != sendImage)
+            {
+                if (!File.Exists(sendImage.TxtContent))
+                {
+                    MessageBox.Show("文件不存在，请选择好文件！");
+                    return;
+                }
+                //先上传
+                WXServices wxServices = new WXServices();
+                ExecEven("正在上传文件到微信服务器.........", null);
+                var resultJson = wxServices.UploadImage(sendImage.TxtContent);
+                if (!string.IsNullOrEmpty(resultJson))
+                {
+                    JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;
+                    string mediaId = obj["MediaId"].ToString();
+                    if (!string.IsNullOrEmpty(mediaId))
+                    {
+                        for (int i = 1; i < list.Count; i++)
+                        {
+                            if ((i % 15) == 0)
+                            {
+                                Thread.Sleep(60 * 1000);
+                            }
+                            msg.From = _me.UserName;
+                            msg.Readed = false;
+                            msg.To = list[i - 1].UserName;
+                            msg.Time = DateTime.Now;
+                            msg.MediaId = mediaId;
+                            _me.SendImage(msg);
+                            var semdLog = string.Format("{0}\t已发{1}信息给{2}", DateTime.Now.ToString(), list[i - 1].NickName, sendImage.SendType);
+                            ExecEven(semdLog, null);
+                        }
+                    }
+                }
+            }
+        }
+        private void SendViedo(List<WXUser> list, List<MessageType> message)
+        {
+            WXMesssage msg = new WXMesssage();
+            var sendVideo = message.Where(a => a.SendType == "视频").FirstOrDefault();
+            if (null != sendVideo)
+            {
+                if (!File.Exists(sendVideo.TxtContent))
+                {
+                    MessageBox.Show("文件不存在，请选择好文件！");
+                    return;
+                }
+                WXServices wxServices = new WXServices();
+                ExecEven("正在上传文件到微信服务器.........", null);
+                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent, _me.UserName, list[0].UserName);
+                if (!string.IsNullOrEmpty(resultJson))
+                {
+                    JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;
+                    string mediaId = obj["MediaId"].ToString();
+                    if (!string.IsNullOrEmpty(mediaId))
+                    {
+                        for (int i = 1; i <= list.Count; i++)
+                        {
+                            if ((i % 120) == 0)
+                            {
+                                Thread.Sleep(60 * 1000);
+                            }
+                            msg.From = _me.UserName;
+                            msg.Readed = false;
+                            msg.To = list[i - 1].UserName;
+                            msg.Time = DateTime.Now;
+                            msg.MediaId = mediaId;
+                            _me.SendVideo(msg);
+                            var semdLog = string.Format("{0}\t已发{1}信息给{2}", DateTime.Now.ToString(), list[i - 1].NickName, sendVideo.SendType);
+                            ExecEven(semdLog, null);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取信息接收对象
+        /// </summary>
+        /// <returns></returns>
+        private List<WXUser> FilterOjb()
         {
             var sendOjb = contact_all;
             if (!checkMale.Checked)
             {
-                sendOjb = sendOjb.Where(a => a.Sex == "1").ToList();
+                sendOjb = sendOjb.Where(a => a.Sex != "1").ToList();
             }
             if (!CheckFemale.Checked)
             {
-                sendOjb = sendOjb.Where(a => a.Sex == "2").ToList();
+                sendOjb = sendOjb.Where(a => a.Sex != "2").ToList();
             }
             if (!CheckGroup.Checked)
             {
-                sendOjb = sendOjb.Where(a => a.Sex == "2").ToList();
+                sendOjb = sendOjb.Where(a => a.ContactFlag != "2").ToList();
             }
             if (!CheckPublicAccount.Checked)
             {
-                sendOjb = sendOjb.Where(a => a.Sex == "2").ToList();
+                sendOjb = sendOjb.Where(a => a.ContactFlag != "1").ToList();
             }
+            if (cmbSheng.SelectedIndex != 0)
+            {
+                sendOjb = sendOjb.Where(a => a.Province == cmbSheng.SelectedText).ToList();
+            }
+            if (cmbShi.SelectedIndex != 0)
+            {
+                sendOjb = sendOjb.Where(a => a.Province == cmbSheng.SelectedText).ToList();
+            }
+            return sendOjb;
         }
 
 
@@ -83,12 +217,29 @@ namespace WeixinTookeen.Client
         /// </summary>
         /// <param name="message"></param>
         /// <param name="e"></param>
-        private void ExecEven(string message,EventArgs e)
+        private void ExecEven(string message, EventArgs e)
         {
-            if (SendSucess !=null)
+            if (SendSucess != null)
             {
-                SendSucess(this,e);
+                SendSucess(message, e);
             }
+        }
+
+        /// <summary>
+        /// 发送日志
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="e"></param>
+        private void ExecEvenColse(string message, EventArgs e)
+        {
+            if (metroCboColse.Checked)
+            {
+                if (ColoseWin != null)
+                {
+                    ColoseWin(this, e);
+                }
+            }
+            
         }
 
 
@@ -164,11 +315,11 @@ namespace WeixinTookeen.Client
                                     user.RemarkPYQuanPin = contact["RemarkPYQuanPin"].ToString();
                                     user.Sex = contact["Sex"].ToString();
                                     user.Signature = contact["Signature"].ToString();
+                                    user.ContactFlag = contact["ContactFlag"].ToString();
                                     contact_all.Add(user);
                                 }
                             }
                             IOrderedEnumerable<WXUser> list_all = contact_all.OrderBy(e => (e as WXUser).ShowPinYin);
-
                             WXUser wx;
                             string start_char;
                             foreach (object o in list_all)
@@ -181,6 +332,7 @@ namespace WeixinTookeen.Client
                                 }
                                 _contact_all.Add(o);
                             }
+                            SendMessage();
                             return;
                         }
                     }
@@ -190,8 +342,8 @@ namespace WeixinTookeen.Client
 
         private void 添加文本ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SelectDataForm selectForm = new SelectDataForm("请输入要发送的文字信息：","文本");
-            if(selectForm.ShowDialog() == DialogResult.OK)
+            SelectDataForm selectForm = new SelectDataForm("请输入要发送的文字信息：", "文本");
+            if (selectForm.ShowDialog() == DialogResult.OK)
             {
                 MessageType type = new MessageType();
                 type.SendType = "文本";
@@ -272,6 +424,19 @@ namespace WeixinTookeen.Client
             cmbShi.ValueMember = "Id";
             cmbShi.DisplayMember = "Name";
             cmbShi.SelectedIndex = 0;
+            ServiceRecordSvc svc = new ServiceRecordSvc();
+            var Authdata = svc.IsAuth();
+            ServiceRecord rec = (ServiceRecord)Authdata.Data;
+            lblDate.Text = rec.ExpireDate.ToShortDateString();
+            MachineSvc mcSvc = new MachineSvc();
+            lblMCCode.Text = mcSvc.Get().MachineCode;
+            lblUserName.Text = "试用00001";
+            if (Authdata.Code == ResultCodeEnums.Auth)
+            {
+                lblAuthCartic.Visible = false;
+                txtAuthCard.Visible = false;
+                btnAuth.Visible = false;
+            }
         }
 
         /// <summary>
@@ -365,7 +530,7 @@ namespace WeixinTookeen.Client
         {
             MessageTypeServices sevice = new MessageTypeServices();
             var data = GetCheckMessage();
-            if (data.Count<=0)
+            if (data.Count <= 0)
             {
                 return;
             }
@@ -387,5 +552,25 @@ namespace WeixinTookeen.Client
             cmbShi.DisplayMember = "Name";
             cmbShi.SelectedIndex = 0;
         }
+
+        private void btnAuth_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtAuthCard.Text))
+            {
+                MetroMessageBox.Show(this, "请输入授权卡！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            ServiceRecordSvc recSvc = new ServiceRecordSvc();
+            var data = recSvc.Auth(txtAuthCard.Text, lblMCCode.Text);
+            MetroMessageBox.Show(this, data.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void lblMCCode_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetDataObject(lblMCCode.Text);
+            MetroMessageBox.Show(this, "机器码已复制！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
     }
 }

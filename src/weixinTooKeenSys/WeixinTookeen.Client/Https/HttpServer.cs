@@ -16,7 +16,6 @@ namespace WeixinTookeen.Client.Https
         /// 访问服务器时的cookies
         /// </summary>
         public static CookieContainer CookiesContainer;
-        private static CookieCollection WxCookies;
 
         /// <summary>
         /// 向服务器发送get请求  返回服务器回复数据
@@ -155,7 +154,7 @@ namespace WeixinTookeen.Client.Https
 
         }
 
-        public static byte[] SendPostRequestByVideo2(string url, string body, FileInfo fi, byte[] buffer, double chunks, int chunk)
+        public static byte[] SendPostRequestByVideo2(string url, string body, FileInfo fi, byte[] buffer, double chunks, int chunk,int length)
         {
             Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
             string filename = fi.Name;
@@ -185,7 +184,7 @@ namespace WeixinTookeen.Client.Https
             request.ServicePoint.Expect100Continue = false;
             string postbody = "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"id\"\r\n\r\n";
-            postbody += "WU_FILE_2\r\n";
+            postbody += "WU_FILE_0\r\n";
             postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"name\"\r\n\r\n";
             postbody += filename + "\r\n";
@@ -211,7 +210,7 @@ namespace WeixinTookeen.Client.Https
             }
             postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
-            postbody += "doc\r\n";
+            postbody += "video\r\n";
             postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
             postbody += body + "\r\n";
@@ -229,7 +228,7 @@ namespace WeixinTookeen.Client.Https
                 var sw = new StreamWriter(request.GetRequestStream());
                 sw.Write(postbody);
                 sw.Flush();
-                sw.BaseStream.Write(buffer, 0, buffer.Length);
+                sw.BaseStream.Write(buffer, 0, length);
                 sw.Write("\r\n------"+ boundary + "--\r\n");
                 sw.Flush();
                 sw.Close();

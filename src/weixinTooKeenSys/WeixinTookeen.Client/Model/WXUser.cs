@@ -36,6 +36,11 @@ namespace WeixinTookeen.Client.Model
         public string Sex { get; set; }
 
         /// <summary>
+        /// 3-好友， 2-群组， 1-公众号
+        /// </summary>
+        public string ContactFlag { get; set; }
+
+        /// <summary>
         /// 签名
         /// </summary>
         public string Signature { get; set; }

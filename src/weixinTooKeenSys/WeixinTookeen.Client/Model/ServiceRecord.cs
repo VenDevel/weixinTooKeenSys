@@ -27,5 +27,10 @@ namespace WeixinTookeen.Client.Model
         /// 是否受权
         /// </summary>
         public bool IsAuth { get; set; }
+
+        /// <summary>
+        /// 过期时间
+        /// </summary>
+        public DateTime ExpireDate { get; set; }
     }
 }

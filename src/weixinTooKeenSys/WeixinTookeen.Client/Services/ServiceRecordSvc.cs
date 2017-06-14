@@ -28,14 +28,33 @@ namespace WeixinTookeen.Client.Services
                 }
             }
             OperResult result = new OperResult();
+            result.Data = record;
             if (record == null)
             {
                 result.Msg = "应用未授权";
-                result.Code = ResultCodeEnums.UnAuth;
+                result.Code = ResultCodeEnums.warning;
+                MachineSvc svc = new MachineSvc();
+                var mc = Guid.NewGuid().ToString("N");
+                svc.Add(mc);
+                using (RobotContext db = new RobotContext())
+                {
+                    var count = GetAESInfo.Set(0.ToString(), mc);
+                    ServiceRecord rec = new ServiceRecord()
+                    {
+                        ExpireDate = DateTime.Now.AddDays(1),
+                        IsAuth = false,
+                        LastOperTime = DateTime.Now,
+                        SurplusTotal = count,
+                        Total = count
+                    };
+                    result.Data = rec;
+                    record = db.Set<ServiceRecord>().Add(rec);
+                    db.SaveChanges();
+                }
             }
-            else if (record.IsAuth == false)
+            else if (record.ExpireDate>=DateTime.Now)
             {
-                result.Msg = "应用未授权";
+                result.Msg = "应用过期，请重新授权";
                 result.Code = ResultCodeEnums.UnAuth;
             }
             else if (int.Parse(GetAESInfo.Get(record.SurplusTotal, key)) <= 0)
@@ -117,6 +136,10 @@ namespace WeixinTookeen.Client.Services
             {
                 var data = db.Set<ServiceRecord>().FirstOrDefault();
                 int now = int.Parse(GetAESInfo.Get(data.SurplusTotal, machine.MachineCode));
+                if (now==0)
+                {
+                    return;
+                }
                 now--;
                 data.SurplusTotal = GetAESInfo.Set(now.ToString(), machine.MachineCode);
                 data.LastOperTime = DateTime.Now;

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.htmlToolTip1 = new MetroFramework.Drawing.Html.HtmlToolTip();
             this.tabLogin = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
@@ -710,6 +711,7 @@
             this.ClientSize = new System.Drawing.Size(316, 344);
             this.Controls.Add(this.panInit);
             this.Controls.Add(this.tabLogin);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormLogin";

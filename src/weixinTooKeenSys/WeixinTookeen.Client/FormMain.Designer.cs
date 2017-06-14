@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.picQRCode = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
@@ -62,7 +63,7 @@
             this.lblDate = new MetroFramework.Controls.MetroLabel();
             this.txtAuthCard = new MetroFramework.Controls.MetroTextBox();
             this.btnAuth = new MetroFramework.Controls.MetroButton();
-            this.metroLabel8 = new MetroFramework.Controls.MetroLabel();
+            this.lblAuthCartic = new MetroFramework.Controls.MetroLabel();
             this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
@@ -70,7 +71,7 @@
             this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
-            this.metroCheckBox5 = new MetroFramework.Controls.MetroCheckBox();
+            this.metroCboColse = new MetroFramework.Controls.MetroCheckBox();
             this.cmbShi = new MetroFramework.Controls.MetroComboBox();
             this.cmbSheng = new MetroFramework.Controls.MetroComboBox();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
@@ -78,6 +79,9 @@
             this.CheckGroup = new MetroFramework.Controls.MetroCheckBox();
             this.CheckFemale = new MetroFramework.Controls.MetroCheckBox();
             this.checkMale = new MetroFramework.Controls.MetroCheckBox();
+            this.panInit = new MetroFramework.Controls.MetroPanel();
+            this.metroProgressSpinner1 = new MetroFramework.Controls.MetroProgressSpinner();
+            this.txtInit = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
@@ -88,6 +92,7 @@
             this.metroTabPage3.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panInit.SuspendLayout();
             this.SuspendLayout();
             // 
             // picQRCode
@@ -123,7 +128,7 @@
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(16, 19);
             this.metroLabel3.TabIndex = 7;
-            this.metroLabel3.Text = "0";
+            this.metroLabel3.Text = "3";
             // 
             // metroLabel2
             // 
@@ -134,7 +139,7 @@
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(16, 19);
             this.metroLabel2.TabIndex = 6;
-            this.metroLabel2.Text = "0";
+            this.metroLabel2.Text = "2";
             // 
             // metroLabel1
             // 
@@ -142,9 +147,9 @@
             this.metroLabel1.ForeColor = System.Drawing.Color.Red;
             this.metroLabel1.Location = new System.Drawing.Point(34, 345);
             this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(16, 19);
+            this.metroLabel1.Size = new System.Drawing.Size(14, 19);
             this.metroLabel1.TabIndex = 5;
-            this.metroLabel1.Text = "0";
+            this.metroLabel1.Text = "1";
             // 
             // lngLoginNum
             // 
@@ -158,7 +163,7 @@
             // 
             // linScanCodeNum
             // 
-            this.linScanCodeNum.Location = new System.Drawing.Point(117, 336);
+            this.linScanCodeNum.Location = new System.Drawing.Point(50, 336);
             this.linScanCodeNum.Name = "linScanCodeNum";
             this.linScanCodeNum.Size = new System.Drawing.Size(41, 37);
             this.linScanCodeNum.TabIndex = 3;
@@ -169,7 +174,7 @@
             // linnotloginNum
             // 
             this.linnotloginNum.ForeColor = System.Drawing.Color.Red;
-            this.linnotloginNum.Location = new System.Drawing.Point(51, 336);
+            this.linnotloginNum.Location = new System.Drawing.Point(119, 336);
             this.linnotloginNum.Name = "linnotloginNum";
             this.linnotloginNum.Size = new System.Drawing.Size(40, 37);
             this.linnotloginNum.TabIndex = 2;
@@ -411,7 +416,7 @@
             this.metroTabPage3.Controls.Add(this.lblDate);
             this.metroTabPage3.Controls.Add(this.txtAuthCard);
             this.metroTabPage3.Controls.Add(this.btnAuth);
-            this.metroTabPage3.Controls.Add(this.metroLabel8);
+            this.metroTabPage3.Controls.Add(this.lblAuthCartic);
             this.metroTabPage3.Controls.Add(this.metroLabel7);
             this.metroTabPage3.Controls.Add(this.metroLabel6);
             this.metroTabPage3.Controls.Add(this.metroLabel5);
@@ -435,6 +440,7 @@
             this.lblMCCode.Size = new System.Drawing.Size(173, 19);
             this.lblMCCode.TabIndex = 13;
             this.lblMCCode.Text = "0000-0000-0000-0000-0000";
+            this.lblMCCode.Click += new System.EventHandler(this.lblMCCode_Click);
             // 
             // lblUserName
             // 
@@ -492,16 +498,17 @@
             this.btnAuth.TabIndex = 9;
             this.btnAuth.Text = "授  权";
             this.btnAuth.UseSelectable = true;
+            this.btnAuth.Click += new System.EventHandler(this.btnAuth_Click);
             // 
-            // metroLabel8
+            // lblAuthCartic
             // 
-            this.metroLabel8.AutoSize = true;
-            this.metroLabel8.Location = new System.Drawing.Point(17, 138);
-            this.metroLabel8.Name = "metroLabel8";
-            this.metroLabel8.Size = new System.Drawing.Size(65, 19);
-            this.metroLabel8.TabIndex = 5;
-            this.metroLabel8.Text = "授权卡：";
-            this.metroLabel8.UseStyleColors = true;
+            this.lblAuthCartic.AutoSize = true;
+            this.lblAuthCartic.Location = new System.Drawing.Point(17, 138);
+            this.lblAuthCartic.Name = "lblAuthCartic";
+            this.lblAuthCartic.Size = new System.Drawing.Size(65, 19);
+            this.lblAuthCartic.TabIndex = 5;
+            this.lblAuthCartic.Text = "授权卡：";
+            this.lblAuthCartic.UseStyleColors = true;
             // 
             // metroLabel7
             // 
@@ -582,7 +589,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.metroButton1);
-            this.groupBox2.Controls.Add(this.metroCheckBox5);
+            this.groupBox2.Controls.Add(this.metroCboColse);
             this.groupBox2.Controls.Add(this.cmbShi);
             this.groupBox2.Controls.Add(this.cmbSheng);
             this.groupBox2.Controls.Add(this.metroLabel4);
@@ -607,16 +614,18 @@
             this.metroButton1.UseSelectable = true;
             this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
             // 
-            // metroCheckBox5
+            // metroCboColse
             // 
-            this.metroCheckBox5.AutoSize = true;
-            this.metroCheckBox5.Location = new System.Drawing.Point(17, 100);
-            this.metroCheckBox5.Name = "metroCheckBox5";
-            this.metroCheckBox5.Size = new System.Drawing.Size(192, 15);
-            this.metroCheckBox5.TabIndex = 7;
-            this.metroCheckBox5.Text = "发送完毕后自动关闭日志窗口";
-            this.metroCheckBox5.UseSelectable = true;
-            this.metroCheckBox5.UseStyleColors = true;
+            this.metroCboColse.AutoSize = true;
+            this.metroCboColse.Checked = true;
+            this.metroCboColse.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.metroCboColse.Location = new System.Drawing.Point(17, 100);
+            this.metroCboColse.Name = "metroCboColse";
+            this.metroCboColse.Size = new System.Drawing.Size(192, 15);
+            this.metroCboColse.TabIndex = 7;
+            this.metroCboColse.Text = "发送完毕后自动关闭日志窗口";
+            this.metroCboColse.UseSelectable = true;
+            this.metroCboColse.UseStyleColors = true;
             // 
             // cmbShi
             // 
@@ -694,14 +703,51 @@
             this.checkMale.UseSelectable = true;
             this.checkMale.UseStyleColors = true;
             // 
+            // panInit
+            // 
+            this.panInit.Controls.Add(this.metroProgressSpinner1);
+            this.panInit.Controls.Add(this.txtInit);
+            this.panInit.HorizontalScrollbarBarColor = true;
+            this.panInit.HorizontalScrollbarHighlightOnWheel = false;
+            this.panInit.HorizontalScrollbarSize = 10;
+            this.panInit.Location = new System.Drawing.Point(2, 8);
+            this.panInit.Name = "panInit";
+            this.panInit.Size = new System.Drawing.Size(677, 435);
+            this.panInit.TabIndex = 17;
+            this.panInit.VerticalScrollbarBarColor = true;
+            this.panInit.VerticalScrollbarHighlightOnWheel = false;
+            this.panInit.VerticalScrollbarSize = 10;
+            // 
+            // metroProgressSpinner1
+            // 
+            this.metroProgressSpinner1.Location = new System.Drawing.Point(190, 92);
+            this.metroProgressSpinner1.Maximum = 1000;
+            this.metroProgressSpinner1.Name = "metroProgressSpinner1";
+            this.metroProgressSpinner1.Size = new System.Drawing.Size(194, 172);
+            this.metroProgressSpinner1.TabIndex = 2;
+            this.metroProgressSpinner1.UseSelectable = true;
+            this.metroProgressSpinner1.Value = 50;
+            // 
+            // txtInit
+            // 
+            this.txtInit.AutoSize = true;
+            this.txtInit.Location = new System.Drawing.Point(226, 282);
+            this.txtInit.Name = "txtInit";
+            this.txtInit.Size = new System.Drawing.Size(125, 19);
+            this.txtInit.TabIndex = 3;
+            this.txtInit.Text = "正在初始化应用……";
+            this.txtInit.UseStyleColors = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(681, 445);
+            this.Controls.Add(this.panInit);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.metroTabControl1);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormMain";
@@ -719,6 +765,8 @@
             this.metroTabPage4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.panInit.ResumeLayout(false);
+            this.panInit.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -747,12 +795,12 @@
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroComboBox cmbShi;
         private MetroFramework.Controls.MetroComboBox cmbSheng;
-        private MetroFramework.Controls.MetroCheckBox metroCheckBox5;
+        private MetroFramework.Controls.MetroCheckBox metroCboColse;
         private MetroFramework.Controls.MetroButton metroButton1;
         private MetroFramework.Controls.MetroGrid GridMessageContent;
         private MetroFramework.Controls.MetroTextBox metroTextBox1;
         private MetroFramework.Controls.MetroLabel metroLabel5;
-        private MetroFramework.Controls.MetroLabel metroLabel8;
+        private MetroFramework.Controls.MetroLabel lblAuthCartic;
         private MetroFramework.Controls.MetroLabel metroLabel7;
         private MetroFramework.Controls.MetroLabel metroLabel6;
         private MetroFramework.Controls.MetroButton btnAuth;
@@ -771,5 +819,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
         private System.Windows.Forms.DataGridViewTextBoxColumn SendType;
         private System.Windows.Forms.DataGridViewTextBoxColumn TxtContent;
+        private MetroFramework.Controls.MetroPanel panInit;
+        private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner1;
+        private MetroFramework.Controls.MetroLabel txtInit;
     }
 }

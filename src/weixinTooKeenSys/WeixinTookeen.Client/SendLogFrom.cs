@@ -32,7 +32,12 @@ namespace WeixinTookeen.Client
 
         private void From_SendSucess(object sender, EventArgs e)
         {
-            this.richTextBoxLog.AppendText("\n" + sender.ToString());
+            this.richTextBoxLog.AppendText( sender.ToString()+ "\n");
+        }
+
+        private void btmEnter_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -48,6 +48,7 @@ namespace WeixinTookeen.Client
             if (messageData.Count <= 0)
             {
                 MetroMessageBox.Show(this, "请选择要发送的信息！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                GetLoginQRCode();
                 return;
             }
             ServiceRecordSvc svc = new ServiceRecordSvc();
@@ -55,6 +56,7 @@ namespace WeixinTookeen.Client
             if (Authdata.Code== ResultCodeEnums.AuthExpire)
             {
                 MetroMessageBox.Show(this, Authdata.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                GetLoginQRCode();
                 return;
             }
             SendLogFrom from = new SendLogFrom(this);

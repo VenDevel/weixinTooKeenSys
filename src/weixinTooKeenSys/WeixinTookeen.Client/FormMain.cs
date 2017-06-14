@@ -83,6 +83,7 @@ namespace WeixinTookeen.Client
                 {
                     if ((i % 200) == 0)
                     {
+                        ExecEven("休息一下等待下一轮发送.........", null);
                         Thread.Sleep(60 * 1000);
                     }
                     msg.From = _me.UserName;
@@ -122,6 +123,7 @@ namespace WeixinTookeen.Client
                         {
                             if ((i % 15) == 0)
                             {
+                                ExecEven("休息一下等待下一轮发送.........", null);
                                 Thread.Sleep(60 * 1000);
                             }
                             msg.From = _me.UserName;
@@ -161,6 +163,7 @@ namespace WeixinTookeen.Client
                         {
                             if ((i % 120) == 0)
                             {
+                                ExecEven("休息一下等待下一轮发送.........", null);
                                 Thread.Sleep(60 * 1000);
                             }
                             msg.From = _me.UserName;

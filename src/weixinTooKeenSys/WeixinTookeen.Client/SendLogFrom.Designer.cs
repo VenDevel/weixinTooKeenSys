@@ -55,7 +55,7 @@
             // 
             // btmEnter
             // 
-            this.btmEnter.Location = new System.Drawing.Point(315, 410);
+            this.btmEnter.Location = new System.Drawing.Point(315, 401);
             this.btmEnter.Name = "btmEnter";
             this.btmEnter.Size = new System.Drawing.Size(91, 28);
             this.btmEnter.TabIndex = 4;

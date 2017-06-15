@@ -79,9 +79,6 @@
             this.CheckGroup = new MetroFramework.Controls.MetroCheckBox();
             this.CheckFemale = new MetroFramework.Controls.MetroCheckBox();
             this.checkMale = new MetroFramework.Controls.MetroCheckBox();
-            this.panInit = new MetroFramework.Controls.MetroPanel();
-            this.metroProgressSpinner1 = new MetroFramework.Controls.MetroProgressSpinner();
-            this.txtInit = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
@@ -92,7 +89,6 @@
             this.metroTabPage3.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.panInit.SuspendLayout();
             this.SuspendLayout();
             // 
             // picQRCode
@@ -157,7 +153,7 @@
             this.lngLoginNum.Name = "lngLoginNum";
             this.lngLoginNum.Size = new System.Drawing.Size(42, 37);
             this.lngLoginNum.TabIndex = 4;
-            this.lngLoginNum.Text = "/已登";
+            this.lngLoginNum.Text = "/发送";
             this.lngLoginNum.UseSelectable = true;
             this.lngLoginNum.UseStyleColors = true;
             // 
@@ -178,7 +174,7 @@
             this.linnotloginNum.Name = "linnotloginNum";
             this.linnotloginNum.Size = new System.Drawing.Size(40, 37);
             this.linnotloginNum.TabIndex = 2;
-            this.linnotloginNum.Text = "/未登";
+            this.linnotloginNum.Text = "/登录";
             this.linnotloginNum.UseSelectable = true;
             this.linnotloginNum.UseStyleColors = true;
             // 
@@ -200,7 +196,7 @@
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Location = new System.Drawing.Point(329, 36);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 2;
             this.metroTabControl1.Size = new System.Drawing.Size(323, 243);
             this.metroTabControl1.TabIndex = 2;
             this.metroTabControl1.UseSelectable = true;
@@ -445,7 +441,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(81, 30);
+            this.lblUserName.Location = new System.Drawing.Point(127, 30);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(82, 19);
             this.lblUserName.TabIndex = 12;
@@ -535,9 +531,9 @@
             this.metroLabel5.AutoSize = true;
             this.metroLabel5.Location = new System.Drawing.Point(17, 30);
             this.metroLabel5.Name = "metroLabel5";
-            this.metroLabel5.Size = new System.Drawing.Size(65, 19);
+            this.metroLabel5.Size = new System.Drawing.Size(107, 19);
             this.metroLabel5.TabIndex = 2;
-            this.metroLabel5.Text = "用户名：";
+            this.metroLabel5.Text = "剩余使用次数：";
             this.metroLabel5.UseStyleColors = true;
             // 
             // metroTabPage4
@@ -703,47 +699,11 @@
             this.checkMale.UseSelectable = true;
             this.checkMale.UseStyleColors = true;
             // 
-            // panInit
-            // 
-            this.panInit.Controls.Add(this.metroProgressSpinner1);
-            this.panInit.Controls.Add(this.txtInit);
-            this.panInit.HorizontalScrollbarBarColor = true;
-            this.panInit.HorizontalScrollbarHighlightOnWheel = false;
-            this.panInit.HorizontalScrollbarSize = 10;
-            this.panInit.Location = new System.Drawing.Point(2, 8);
-            this.panInit.Name = "panInit";
-            this.panInit.Size = new System.Drawing.Size(677, 435);
-            this.panInit.TabIndex = 17;
-            this.panInit.VerticalScrollbarBarColor = true;
-            this.panInit.VerticalScrollbarHighlightOnWheel = false;
-            this.panInit.VerticalScrollbarSize = 10;
-            // 
-            // metroProgressSpinner1
-            // 
-            this.metroProgressSpinner1.Location = new System.Drawing.Point(190, 92);
-            this.metroProgressSpinner1.Maximum = 1000;
-            this.metroProgressSpinner1.Name = "metroProgressSpinner1";
-            this.metroProgressSpinner1.Size = new System.Drawing.Size(194, 172);
-            this.metroProgressSpinner1.TabIndex = 2;
-            this.metroProgressSpinner1.UseSelectable = true;
-            this.metroProgressSpinner1.Value = 50;
-            // 
-            // txtInit
-            // 
-            this.txtInit.AutoSize = true;
-            this.txtInit.Location = new System.Drawing.Point(226, 282);
-            this.txtInit.Name = "txtInit";
-            this.txtInit.Size = new System.Drawing.Size(125, 19);
-            this.txtInit.TabIndex = 3;
-            this.txtInit.Text = "正在初始化应用……";
-            this.txtInit.UseStyleColors = true;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(681, 445);
-            this.Controls.Add(this.panInit);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.metroTabControl1);
             this.Controls.Add(this.groupBox1);
@@ -765,8 +725,6 @@
             this.metroTabPage4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.panInit.ResumeLayout(false);
-            this.panInit.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -819,8 +777,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
         private System.Windows.Forms.DataGridViewTextBoxColumn SendType;
         private System.Windows.Forms.DataGridViewTextBoxColumn TxtContent;
-        private MetroFramework.Controls.MetroPanel panInit;
-        private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner1;
-        private MetroFramework.Controls.MetroLabel txtInit;
     }
 }

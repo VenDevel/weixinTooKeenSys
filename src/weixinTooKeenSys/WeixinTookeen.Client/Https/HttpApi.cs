@@ -9,10 +9,12 @@ namespace WeixinTookeen.Client.Https
     public class HttpApi
     {
         public static Hashtable Api = new Hashtable();
+        public static string ContactFlag = "1";
 
         public void SetWX()
         {
             Api.Clear();
+            ContactFlag = "1";
             //获取好友头像
             Api.Add("_geticon_url", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=");
             //获取群聊（组）头像
@@ -36,6 +38,7 @@ namespace WeixinTookeen.Client.Https
 
         public void SetWX2()
         {
+            ContactFlag = "3";
             Api.Clear();
             //获取好友头像
             Api.Add("_geticon_url", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=");

@@ -138,7 +138,7 @@ namespace WeixinTookeen.Client.Model
         public void SendVideo(WXMesssage msg)
         {
             WXServices wxs = new WXServices();
-            wxs.SendVideo(msg.MediaId, msg.From, msg.To);
+            wxs.SendVideo(msg.MediaId, msg.From, msg.To,msg.Type);
         }
 
         public void SendFile(WXMesssage msg, long totallen, string title, string fileext)
@@ -150,7 +150,7 @@ namespace WeixinTookeen.Client.Model
         public void SendImage(WXMesssage msg)
         {
             WXServices wxs = new WXServices();
-            wxs.SendImage(msg.MediaId, msg.From, msg.To);
+            wxs.SendImage(msg.MediaId, msg.From, msg.To,msg.Type);
         }
     }
 }

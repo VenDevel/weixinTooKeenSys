@@ -26,7 +26,7 @@ namespace WeixinTookeen.Client.Model
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Configurations.AddFromAssembly(typeof(RobotContext).Assembly);
-            Database.SetInitializer(new DbInitalizerIfNotExists(modelBuilder));
+            Database.SetInitializer(new DbInitializer(modelBuilder));
         }
 
     }

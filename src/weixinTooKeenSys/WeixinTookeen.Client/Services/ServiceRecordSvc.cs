@@ -41,7 +41,7 @@ namespace WeixinTookeen.Client.Services
                     var count = GetAESInfo.Set(0.ToString(), mc);
                     ServiceRecord rec = new ServiceRecord()
                     {
-                        ExpireDate = DateTime.Now.AddDays(1),
+                        ExpireDate = DateTime.Now.AddHours(2),
                         IsAuth = false,
                         LastOperTime = DateTime.Now,
                         SurplusTotal = count,

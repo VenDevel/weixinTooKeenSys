@@ -63,7 +63,7 @@ namespace WeixinTookeen.Client.Services
                 string init_str = Encoding.UTF8.GetString(bytes);
 
                 JObject init_result = JsonConvert.DeserializeObject(init_str) as JObject;
-
+                _syncKey.Clear();
                 foreach (JObject synckey in init_result["SyncKey"]["List"])  //同步键值
                 {
                     _syncKey.Add(synckey["Key"].ToString(), synckey["Val"].ToString());
@@ -111,13 +111,11 @@ namespace WeixinTookeen.Client.Services
                 msg_json = string.Format(msg_json, sid.Value, uin.Value, msg, from, to, type, LoginService.SKey, DateTime.Now.Millisecond, DateTime.Now.Millisecond, DateTime.Now.Millisecond, Utils.GetTimeSpan());
 
                 byte[] bytes = HttpServer.SendPostRequest(_sendmsg_url + sid.Value + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
-
-                string send_result = Encoding.UTF8.GetString(bytes);
             }
         }
 
 
-        public void SendVideo(string MediaId, string from, string to)
+        public void SendVideo(string MediaId, string from, string to,int type)
         {
             string msg_json = "{{" +
           "\"BaseRequest\":{{" +
@@ -133,7 +131,7 @@ namespace WeixinTookeen.Client.Services
               "\"FromUserName\" : \"{7}\"," +
               "\"LocalID\" : {8}," +
               "\"ToUserName\" : \"{9}\"," +
-              "\"Type\" : 43" +
+              "\"Type\" : {11}" +
           "}}," +
           "\"rr\" : {10}" +
           "}}";
@@ -141,7 +139,7 @@ namespace WeixinTookeen.Client.Services
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), MediaId, string.Empty, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan());
+                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), MediaId, string.Empty, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan(),type);
                 byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
                 JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
@@ -191,7 +189,7 @@ namespace WeixinTookeen.Client.Services
             return send_result;
         }
 
-        public string UploadVideo(string path, string From, string To)
+        public string UploadVideo(string path)
         {
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
@@ -199,7 +197,7 @@ namespace WeixinTookeen.Client.Services
             string send_result = string.Empty;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
-            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{4}\",\"ToUserName\":\"{5}\",\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan(), From, To);
+            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
             FileStream fs = file.OpenRead();
             byte[] buffer = new byte[1024 * 512];
             int bytesRead = 0;
@@ -303,11 +301,11 @@ namespace WeixinTookeen.Client.Services
         }
 
 
-        public void SendImage(string MediaId, string from, string to)
+        public void SendImage(string MediaId, string from, string to,int type)
         {
             string msg_json = "{{\"BaseRequest\":" +
                              "{{ \"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{8}\"}}," +
-                                "\"Msg\":{{\"Type\":3," +
+                                "\"Msg\":{{\"Type\":{8}," +
                                 "\"MediaId\":\"{3}\"," +
                                 "\"Content\":\"\"," +
                                 "\"FromUserName\":\"{4}\"," +
@@ -319,7 +317,7 @@ namespace WeixinTookeen.Client.Services
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, Utils.GetTimeSpan(), Utils.GetTimeSpan(), Utils.GetTimeSpan());
+                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, Utils.GetTimeSpan(), Utils.GetTimeSpan(), Utils.GetTimeSpan(), type);
                 byte[] bytes = HttpServer.SendPostRequest(_sendmsgimg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
             }

@@ -24,6 +24,15 @@ namespace WeixinTookeen.Client.Model.Dto
             get;
         }
         /// <summary>
+        /// 接收人微信名
+        /// </summary>
+        public string ToNickName
+        {
+            set;
+            get;
+        }
+
+        /// <summary>
         /// 消息发送时间
         /// </summary>
         public DateTime Time

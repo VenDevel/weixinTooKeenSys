@@ -83,11 +83,12 @@ namespace WeixinTookeen.Client
             {
                 for (int i = 1; i <= list.Count; i++)
                 {
-                    if ((i % 200) == 0)
+                    if ((i % 100) == 0)
                     {
                         ExecEven("休息一下等待下一轮发送.........", null);
                         Thread.Sleep(60 * 1000);
                     }
+                    Thread.Sleep(500);
                     msg.From = _me.UserName;
                     msg.Readed = false;
                     msg.To = list[i - 1].UserName;
@@ -128,6 +129,7 @@ namespace WeixinTookeen.Client
                                 ExecEven("休息一下等待下一轮发送.........", null);
                                 Thread.Sleep(60 * 1000);
                             }
+                            Thread.Sleep(500);
                             msg.From = _me.UserName;
                             msg.Readed = false;
                             msg.To = list[i - 1].UserName;
@@ -168,6 +170,7 @@ namespace WeixinTookeen.Client
                                 ExecEven("休息一下等待下一轮发送.........", null);
                                 Thread.Sleep(60 * 1000);
                             }
+                            Thread.Sleep(500);
                             msg.From = _me.UserName;
                             msg.Readed = false;
                             msg.To = list[i - 1].UserName;

@@ -52,7 +52,7 @@ namespace WeixinTookeen.Client.Services
                     db.SaveChanges();
                 }
             }
-            else if (record.ExpireDate>=DateTime.Now)
+            else if (record.ExpireDate<=DateTime.Now)
             {
                 result.Msg = "应用过期，请重新授权";
                 result.Code = ResultCodeEnums.UnAuth;

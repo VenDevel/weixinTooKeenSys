@@ -71,6 +71,8 @@ namespace WeixinTookeen.Client
             ExecEven(string.Format("一共获取了{0}个好友，此次将发送给{1}个好友", contact_all.Count(), list.Count()), null);
             GetSendMessage();
             ExecEvenColse("", null);
+            WXServices services = new WXServices();
+            services.Wxlogout();
             GetLoginQRCode();
         }
 

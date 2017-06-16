@@ -46,6 +46,11 @@ namespace WeixinTookeen.Client.Services
         //发送文件
         // private string _webwxsendappmsg = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN";
         private string _webwxsendappmsg = HttpApi.Api["_webwxsendappmsg"].ToString();
+
+
+        //private string _webwxlogout = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxlogout?redirect=1&type=1&skey=%40crypt_c8683acf_610269d12bb47f2743064cd78a57b335";
+        private string _webwxlogout = HttpApi.Api["_webwxlogout"].ToString();
+
         /// <summary>
         /// 微信初始化
         /// </summary>
@@ -114,8 +119,17 @@ namespace WeixinTookeen.Client.Services
             }
         }
 
+        public void Wxlogout()
+        {
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            if (sid != null && uin != null)
+            {
+                byte[] bytes = HttpServer.SendPostRequest(_webwxlogout + "&skey="+LoginService.SKey+ "&sid"+ sid + "&uin"+ uin,"");
+            }
+        }
 
-        public void SendVideo(string MediaId, string from, string to,int type)
+        public void SendVideo(string MediaId, string from, string to, int type)
         {
             string msg_json = "{{" +
           "\"BaseRequest\":{{" +
@@ -139,7 +153,7 @@ namespace WeixinTookeen.Client.Services
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), MediaId, string.Empty, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan(),type);
+                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), MediaId, string.Empty, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan(), type);
                 byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
                 JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
@@ -301,7 +315,7 @@ namespace WeixinTookeen.Client.Services
         }
 
 
-        public void SendImage(string MediaId, string from, string to,int type)
+        public void SendImage(string MediaId, string from, string to, int type)
         {
             string msg_json = "{{\"BaseRequest\":" +
                              "{{ \"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{8}\"}}," +

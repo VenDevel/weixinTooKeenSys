@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -65,6 +66,20 @@ namespace WeixinTookeen.Client
                 {
                     MetroMessageBox.Show(this, "请选择.JMP4格式的视频！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
+                }
+                else
+                {
+                    FileInfo file = new FileInfo(txtMessage.Text);
+                    if (!file.Exists)
+                    {
+                        MetroMessageBox.Show(this, "视频文件不存在，请重新拽入文件！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    else if (file.Length> 10485760)
+                    {
+                        MetroMessageBox.Show(this, "文件过大，请选择文件大小小于10M的视频！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                 }
             }
             returnValue = txtMessage.Text;

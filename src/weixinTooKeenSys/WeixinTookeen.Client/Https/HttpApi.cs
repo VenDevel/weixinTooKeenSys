@@ -34,6 +34,8 @@ namespace WeixinTookeen.Client.Https
             Api.Add("_webwxgetmsgimg", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?");
             //发文件
             Api.Add("_webwxsendappmsg", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN");
+            //退出
+            Api.Add("_webwxlogout", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxlogout?redirect=1&type=1");
         }
 
         public void SetWX2()
@@ -59,6 +61,8 @@ namespace WeixinTookeen.Client.Https
             Api.Add("_webwxgetmsgimg", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?");
             //发文件
             Api.Add("_webwxsendappmsg", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN");
+            //退出
+            Api.Add("_webwxlogout", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxlogout?redirect=1&type=1");
         }
 
         public void InitApi(string url)

@@ -44,13 +44,13 @@ namespace WeixinTookeen.Client
 
         public void SendMessageInit()
         {
-            var messageData = GetCheckMessage();
-            if (messageData.Count <= 0)
-            {
-                MetroMessageBox.Show(this, "请选择要发送的信息！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                GetLoginQRCode();
-                return;
-            }
+            //var messageData = GetCheckMessage();
+            //if (messageData.Count <= 0)
+            //{
+            //    MetroMessageBox.Show(this, "请选择要发送的信息！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    GetLoginQRCode();
+            //    return;
+            //}
             ServiceRecordSvc svc = new ServiceRecordSvc();
             var Authdata = svc.IsAuth();
             if (Authdata.Code == ResultCodeEnums.AuthExpire)
@@ -197,7 +197,7 @@ namespace WeixinTookeen.Client
                     Thread.Sleep(60 * 1000);
                 }
                 _me.SendMsg(msg);
-                Thread.Sleep(500);
+                Thread.Sleep(900);
                 var semdLog = string.Format("{0}\t已发【文本】信息给{1}", DateTime.Now.ToString(), msg.ToNickName);
                 ExecEven(semdLog, null);
             }
@@ -213,7 +213,7 @@ namespace WeixinTookeen.Client
                     Thread.Sleep(60 * 1000);
                 }
                 _me.SendImage(msg);
-                Thread.Sleep(500);
+                Thread.Sleep(900);
                 var semdLog = string.Format("{0}\t已发【图片】信息给{1}", DateTime.Now.ToString(), msg.ToNickName);
                 ExecEven(semdLog, null);
             }
@@ -228,7 +228,7 @@ namespace WeixinTookeen.Client
                     Thread.Sleep(60 * 1000);
                 }
                 _me.SendVideo(msg);
-                Thread.Sleep(500);
+                Thread.Sleep(900);
                 var semdLog = string.Format("{0}\t已发【视频】信息给{1}", DateTime.Now.ToString(), msg.ToNickName);
                 ExecEven(semdLog, null);
             }
@@ -629,10 +629,10 @@ namespace WeixinTookeen.Client
 
         private void lblMCCode_Click(object sender, EventArgs e)
         {
-            var key = Guid.NewGuid().ToString("N");
-            MachineSvc svc = new MachineSvc();
-            svc.Add(key);
-            lblMCCode.Text = "key";
+            //var key = Guid.NewGuid().ToString("N");
+            //MachineSvc svc = new MachineSvc();
+            //svc.Add(key);
+            //lblMCCode.Text = key;
             Clipboard.SetDataObject(lblMCCode.Text);
             MetroMessageBox.Show(this, "机器码已复制！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

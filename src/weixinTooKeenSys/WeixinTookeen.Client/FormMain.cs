@@ -41,7 +41,7 @@ namespace WeixinTookeen.Client
             GetLoginQRCode();
             FromInit();
         }
-
+        SendLogFrom from = null;
         public void SendMessageInit()
         {
             ServiceRecordSvc svc = new ServiceRecordSvc();
@@ -54,11 +54,15 @@ namespace WeixinTookeen.Client
             }
             this.BeginInvoke((Action)(delegate ()
             {
-                SendLogFrom from = new SendLogFrom(this);
+                if (from == null)
+                {
+                    from = new SendLogFrom(this);
+                }
                 from.Left = this.Left + this.Width;
                 from.Top = this.Top;
                 from.Show();
             }));
+            Thread.Sleep(500);
             ExecEven("正初化发送信息设置！", null);
             List<WXUser> list = FilterOjb();
             ExecEven(string.Format("一共获取了{0}个好友，此次将发送给{1}个好友", contact_all.Count(), list.Count()), null);
@@ -84,6 +88,12 @@ namespace WeixinTookeen.Client
             SetText(message, setWxMsg);
             UploadImage(message, setWxMsg);
             UploadViedo(message, setWxMsg);
+            if (setWxMsg.Count <= 0)
+            {
+                MetroMessageBox.Show(this, "未能获取到当前发送的信息，请设置好信息并点击保存按钮！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ColoseWin(true, null);
+                return;
+            }
             SendMessage(setWxMsg);
         }
 
@@ -115,7 +125,7 @@ namespace WeixinTookeen.Client
         private void SetText(List<MessageType> message, List<WXMesssage> wxMsgList)
         {
             var sendMsg = message.Where(a => a.SendType == "文本").FirstOrDefault();
-            if (null!=sendMsg)
+            if (null != sendMsg)
             {
                 WXMesssage msg = new WXMesssage();
                 msg.Type = 1;
@@ -125,7 +135,7 @@ namespace WeixinTookeen.Client
                 msg.From = _me.UserName;
                 wxMsgList.Add(msg);
             }
-           
+
         }
 
         private void UploadImage(List<MessageType> message, List<WXMesssage> wxMsgList)
@@ -484,7 +494,7 @@ namespace WeixinTookeen.Client
             lblUserName.Text = "软件试用期";
             if (Authdata.Code == ResultCodeEnums.Auth)
             {
-                lblUserName.Text = GetAESInfo.Get(rec.SurplusTotal, key) ;
+                lblUserName.Text = GetAESInfo.Get(rec.SurplusTotal, key);
                 lblAuthCartic.Visible = false;
                 txtAuthCard.Visible = false;
                 btnAuth.Visible = false;

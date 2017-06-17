@@ -23,6 +23,7 @@ namespace WeixinTookeen.Client
 
         public SendLogFrom(FormMain from) : this()
         {
+            from.SendSucess -= From_SendSucess;
             from.SendSucess += From_SendSucess;
             from.ColoseWin += From_ColoseWin;
         }
@@ -31,7 +32,8 @@ namespace WeixinTookeen.Client
         {
             if (Convert.ToBoolean(sender))
             {
-                this.Close();
+                this.Hide();
+                this.richTextBoxLog.Text = "";
             }
             else
             {
@@ -41,19 +43,18 @@ namespace WeixinTookeen.Client
 
         private void From_SendSucess(object sender, EventArgs e)
         {
+            if (this.Visible==false)
+            {
+                this.Show();
+            }
             this.richTextBoxLog.AppendText(sender.ToString() + "\n");
-            //Thread t = new Thread(Exec);
-            //t.Start(sender);
 
-        }
-        void Exec(object msg)
-        {
-            //this.richTextBoxLog.AppendText(msg.ToString() + "\n");
         }
 
         private void btmEnter_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            this.richTextBoxLog.Text = "";
         }
     }
 }

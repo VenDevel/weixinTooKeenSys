@@ -75,7 +75,7 @@ namespace WeixinTookeen.Client
                         MetroMessageBox.Show(this, "视频文件不存在，请重新拽入文件！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
-                    else if (file.Length> 10485760)
+                    else if (file.Length > 10485760)
                     {
                         MetroMessageBox.Show(this, "文件过大，请选择文件大小小于10M的视频！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;

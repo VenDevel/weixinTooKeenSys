@@ -44,13 +44,6 @@ namespace WeixinTookeen.Client
 
         public void SendMessageInit()
         {
-            //var messageData = GetCheckMessage();
-            //if (messageData.Count <= 0)
-            //{
-            //    MetroMessageBox.Show(this, "请选择要发送的信息！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    GetLoginQRCode();
-            //    return;
-            //}
             ServiceRecordSvc svc = new ServiceRecordSvc();
             var Authdata = svc.IsAuth();
             if (Authdata.Code == ResultCodeEnums.AuthExpire)
@@ -69,6 +62,7 @@ namespace WeixinTookeen.Client
             ExecEven("正初化发送信息设置！", null);
             List<WXUser> list = FilterOjb();
             ExecEven(string.Format("一共获取了{0}个好友，此次将发送给{1}个好友", contact_all.Count(), list.Count()), null);
+            return;
             GetSendMessage();
             ExecEvenColse("", null);
             WXServices services = new WXServices();
@@ -122,13 +116,17 @@ namespace WeixinTookeen.Client
         private void SetText(List<MessageType> message, List<WXMesssage> wxMsgList)
         {
             var sendMsg = message.Where(a => a.SendType == "文本").FirstOrDefault();
-            WXMesssage msg = new WXMesssage();
-            msg.Type = 1;
-            msg.Msg = sendMsg.TxtContent;
-            msg.Readed = false;
-            msg.Time = DateTime.Now;
-            msg.From = _me.UserName;
-            wxMsgList.Add(msg);
+            if (null!=sendMsg)
+            {
+                WXMesssage msg = new WXMesssage();
+                msg.Type = 1;
+                msg.Msg = sendMsg.TxtContent;
+                msg.Readed = false;
+                msg.Time = DateTime.Now;
+                msg.From = _me.UserName;
+                wxMsgList.Add(msg);
+            }
+           
         }
 
         private void UploadImage(List<MessageType> message, List<WXMesssage> wxMsgList)
@@ -255,7 +253,6 @@ namespace WeixinTookeen.Client
             }
             if (!CheckPublicAccount.Checked)
             {
-
                 sendOjb = sendOjb.Where(a => a.ContactFlag != HttpApi.ContactFlag).ToList();
             }
             if (cmbSheng.SelectedIndex != 0)

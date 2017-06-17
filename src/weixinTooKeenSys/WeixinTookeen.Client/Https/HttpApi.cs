@@ -40,7 +40,7 @@ namespace WeixinTookeen.Client.Https
 
         public void SetWX2()
         {
-            ContactFlag = "3";
+            ContactFlag = "1";
             Api.Clear();
             //获取好友头像
             Api.Add("_geticon_url", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=");

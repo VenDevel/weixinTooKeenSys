@@ -13,24 +13,25 @@ namespace WeixinTookeen.Client
         [STAThread]
         static void Main()
         {
-            //try
-            //{
-            //设置应用程序处理异常方式：ThreadException处理  
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            //处理UI线程异常  
-            //Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-            //处理非UI线程异常  
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            try
+            {
+                wxRobot.Util.Utils.Utils.SetAccess("Users", Application.StartupPath);
+                //设置应用程序处理异常方式：ThreadException处理  
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                //处理UI线程异常  
+                //Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+                //处理非UI线程异常  
+                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new FormMain());
+            }
+            catch (Exception ex)
+            {
+                string str = GetExceptionMsg(ex, string.Empty);
+                MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-        //catch (Exception ex)
-        //{
-        //string str = GetExceptionMsg(ex, string.Empty);
-        //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //}
-
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {

@@ -62,7 +62,6 @@ namespace WeixinTookeen.Client
             ExecEven("正初化发送信息设置！", null);
             List<WXUser> list = FilterOjb();
             ExecEven(string.Format("一共获取了{0}个好友，此次将发送给{1}个好友", contact_all.Count(), list.Count()), null);
-            return;
             GetSendMessage();
             ExecEvenColse("", null);
             WXServices services = new WXServices();

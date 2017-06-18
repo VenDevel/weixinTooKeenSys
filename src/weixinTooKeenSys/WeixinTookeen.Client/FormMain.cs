@@ -262,7 +262,7 @@ namespace WeixinTookeen.Client
             }
             if (!CheckPublicAccount.Checked)
             {
-                sendOjb = sendOjb.Where(a => a.ContactFlag != HttpApi.ContactFlag).ToList();
+                sendOjb = sendOjb.Where(a => a.VerifyFlag == "0").ToList();
             }
             if (cmbSheng.SelectedIndex != 0)
             {
@@ -378,6 +378,7 @@ namespace WeixinTookeen.Client
                                     user.Sex = contact["Sex"].ToString();
                                     user.Signature = contact["Signature"].ToString();
                                     user.ContactFlag = contact["ContactFlag"].ToString();
+                                    user.VerifyFlag = contact["VerifyFlag"].ToString();                                    
                                     contact_all.Add(user);
                                 }
                             }

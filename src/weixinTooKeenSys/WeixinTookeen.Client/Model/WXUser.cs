@@ -41,6 +41,11 @@ namespace WeixinTookeen.Client.Model
         public string ContactFlag { get; set; }
 
         /// <summary>
+        /// 好友为0,公众号>0
+        /// </summary>
+        public string VerifyFlag { get; set; }
+
+        /// <summary>
         /// 签名
         /// </summary>
         public string Signature { get; set; }

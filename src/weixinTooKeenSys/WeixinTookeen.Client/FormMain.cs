@@ -308,6 +308,8 @@ namespace WeixinTookeen.Client
         /// </summary>
         private void GetLoginQRCode()
         {
+            contact_all.Clear();
+            _contact_all.Clear();
             picQRCode.Image = null;
             picQRCode.SizeMode = PictureBoxSizeMode.Zoom;
             ((Action)(delegate ()

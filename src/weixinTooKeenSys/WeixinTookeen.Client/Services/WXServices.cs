@@ -156,6 +156,10 @@ namespace WeixinTookeen.Client.Services
                 msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), MediaId, string.Empty, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan(), type);
                 byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
+                if (null==send_result)
+                {
+                    return;
+                }
                 JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
                 string MsgID = obj["MsgID"].ToString();
                 if (!string.IsNullOrEmpty(MsgID))
@@ -203,7 +207,7 @@ namespace WeixinTookeen.Client.Services
             return send_result;
         }
 
-        public string UploadVideo(string path)
+        public string UploadVideo(string path, string From, string To)
         {
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
@@ -211,7 +215,7 @@ namespace WeixinTookeen.Client.Services
             string send_result = string.Empty;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
-            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
+            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{4}\",\"ToUserName\":\"{5}\",\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan(), From, To);
             FileStream fs = file.OpenRead();
             byte[] buffer = new byte[1024 * 512];
             int bytesRead = 0;

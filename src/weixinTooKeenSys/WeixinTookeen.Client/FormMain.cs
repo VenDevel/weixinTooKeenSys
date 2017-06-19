@@ -179,7 +179,7 @@ namespace WeixinTookeen.Client
                 }
                 WXServices wxServices = new WXServices();
                 ExecEven("正在上传文件到微信服务器.........", null);
-                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent);
+                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent, _me.UserName, contact_all[0].UserName);
                 if (!string.IsNullOrEmpty(resultJson))
                 {
                     JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;

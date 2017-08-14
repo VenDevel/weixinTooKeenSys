@@ -78,7 +78,7 @@ namespace WeixinTookeen.Client
         private void GetSendMessage()
         {
             MessageTypeServices sevice = new MessageTypeServices();
-            List<MessageType> message = sevice.GetNewMessage();
+            List<MessageType> message = sevice.GetNewMessageRemote();
             if (message.Count <= 0)
             {
                 MetroMessageBox.Show(this, "未能获取到当前发送的信息，请设置好信息并点击保存按钮！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -129,7 +129,7 @@ namespace WeixinTookeen.Client
             {
                 WXMesssage msg = new WXMesssage();
                 msg.Type = 1;
-                msg.Msg = sendMsg.TxtContent;
+                msg.Msg = WXFace.AddFace(sendMsg.TxtContent);
                 msg.Readed = false;
                 msg.Time = DateTime.Now;
                 msg.From = _me.UserName;
@@ -473,7 +473,7 @@ namespace WeixinTookeen.Client
             this.checkMale.Checked = true;
             this.CheckFemale.Checked = true;
             MessageTypeServices sevice = new MessageTypeServices();
-            GridMessageContent.DataSource = sevice.GetNewMessage();
+            GridMessageContent.DataSource = sevice.GetNewMessageRemote();
             List<City> cityList = AllCity.allCityData;
             var data = cityList.Where(a => a.Pid == 0).ToList();
             data.Insert(0, new City() { Id = 0, Name = "全部" });
@@ -599,7 +599,7 @@ namespace WeixinTookeen.Client
             {
                 return;
             }
-            sevice.SetMessage(data);
+            sevice.SetMessageRemote(data);
             ServiceRecordSvc svc = new ServiceRecordSvc();
             svc.SetRecord();
         }
@@ -646,6 +646,9 @@ namespace WeixinTookeen.Client
             MetroMessageBox.Show(this, "机器码已复制！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-
+        private void picQRCode_Click(object sender, EventArgs e)
+        {
+            GetLoginQRCode();
+        }
     }
 }

@@ -35,6 +35,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.picQRCode = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.metroLink3 = new MetroFramework.Controls.MetroLink();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
@@ -79,6 +80,7 @@
             this.CheckGroup = new MetroFramework.Controls.MetroCheckBox();
             this.CheckFemale = new MetroFramework.Controls.MetroCheckBox();
             this.checkMale = new MetroFramework.Controls.MetroCheckBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
@@ -89,18 +91,21 @@
             this.metroTabPage3.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // picQRCode
             // 
             this.picQRCode.Location = new System.Drawing.Point(17, 27);
             this.picQRCode.Name = "picQRCode";
-            this.picQRCode.Size = new System.Drawing.Size(239, 216);
+            this.picQRCode.Size = new System.Drawing.Size(239, 236);
             this.picQRCode.TabIndex = 0;
             this.picQRCode.TabStop = false;
+            this.picQRCode.Click += new System.EventHandler(this.picQRCode_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.metroLink3);
             this.groupBox1.Controls.Add(this.metroLabel3);
             this.groupBox1.Controls.Add(this.metroLabel2);
             this.groupBox1.Controls.Add(this.metroLabel1);
@@ -114,7 +119,17 @@
             this.groupBox1.Size = new System.Drawing.Size(271, 388);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "请用手机微信扫个扫";
+            this.groupBox1.Text = "请用手机微信扫个扫(点击二维码刷新）";
+            // 
+            // metroLink3
+            // 
+            this.metroLink3.Location = new System.Drawing.Point(17, 298);
+            this.metroLink3.Name = "metroLink3";
+            this.metroLink3.Size = new System.Drawing.Size(216, 23);
+            this.metroLink3.TabIndex = 8;
+            this.metroLink3.Text = "我愿意把本次活动告诉我的朋友";
+            this.metroLink3.UseSelectable = true;
+            this.metroLink3.UseStyleColors = true;
             // 
             // metroLabel3
             // 
@@ -203,7 +218,7 @@
             // 
             // metroTabPage1
             // 
-            this.metroTabPage1.Controls.Add(this.GridMessageContent);
+            this.metroTabPage1.Controls.Add(this.groupBox3);
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
             this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.HorizontalScrollbarSize = 10;
@@ -251,7 +266,7 @@
             this.GridMessageContent.EnableHeadersVisualStyles = false;
             this.GridMessageContent.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.GridMessageContent.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.GridMessageContent.Location = new System.Drawing.Point(3, 3);
+            this.GridMessageContent.Location = new System.Drawing.Point(2, 20);
             this.GridMessageContent.Name = "GridMessageContent";
             this.GridMessageContent.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -266,7 +281,7 @@
             this.GridMessageContent.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.GridMessageContent.RowTemplate.Height = 23;
             this.GridMessageContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.GridMessageContent.Size = new System.Drawing.Size(312, 195);
+            this.GridMessageContent.Size = new System.Drawing.Size(308, 175);
             this.GridMessageContent.TabIndex = 2;
             this.GridMessageContent.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridMessageContent_CellContentClick);
             // 
@@ -699,6 +714,16 @@
             this.checkMale.UseSelectable = true;
             this.checkMale.UseStyleColors = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.GridMessageContent);
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(312, 202);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "右键，选择发送消息类型";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -725,6 +750,7 @@
             this.metroTabPage4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -777,5 +803,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
         private System.Windows.Forms.DataGridViewTextBoxColumn SendType;
         private System.Windows.Forms.DataGridViewTextBoxColumn TxtContent;
+        private MetroFramework.Controls.MetroLink metroLink3;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }

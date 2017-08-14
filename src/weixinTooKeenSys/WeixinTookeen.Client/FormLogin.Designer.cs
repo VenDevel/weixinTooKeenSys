@@ -85,7 +85,7 @@
             this.tabLogin.Controls.Add(this.metroTabPage4);
             this.tabLogin.Location = new System.Drawing.Point(23, 36);
             this.tabLogin.Name = "tabLogin";
-            this.tabLogin.SelectedIndex = 3;
+            this.tabLogin.SelectedIndex = 0;
             this.tabLogin.Size = new System.Drawing.Size(274, 270);
             this.tabLogin.TabIndex = 0;
             this.tabLogin.UseSelectable = true;

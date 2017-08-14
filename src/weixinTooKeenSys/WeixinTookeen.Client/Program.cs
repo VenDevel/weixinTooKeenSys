@@ -24,7 +24,7 @@ namespace WeixinTookeen.Client
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new FormMain());
+                Application.Run(new FormLogin());
 
                 /**
 10              * 当前用户是管理员的时候，直接启动应用程序

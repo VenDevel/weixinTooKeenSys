@@ -143,6 +143,7 @@
     <Compile Include="Model\Dto\LoginCurrUser.cs" />
     <Compile Include="Model\Dto\MemberLogin.cs" />
     <Compile Include="Model\Dto\WXFace.cs" />
+    <Compile Include="Model\Enums\CapEnum.cs" />
     <Compile Include="Model\Mapping\CityMapping.cs" />
     <Compile Include="Model\Mapping\MessageTypeMapping.cs" />
     <Compile Include="Model\MessageType.cs" />

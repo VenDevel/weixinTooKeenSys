@@ -10,7 +10,7 @@ namespace WeixinTookeen.Client.Repository
     public class MySqlHelper
     {
         //从配置文件读取连接字符串
-        private static readonly string connstr = "Server=118.244.206.185;User ID=wxqf;Password=wxqf#110119;Database=wxqf;CharSet=utf8";
+        private static readonly string connstr = "Server=139.129.35.228;User ID=wxqf;Password=wxqf#110119;Database=wxqf;CharSet=utf8";
 
         //创建连接
         public static MySqlConnection CreateConnection()

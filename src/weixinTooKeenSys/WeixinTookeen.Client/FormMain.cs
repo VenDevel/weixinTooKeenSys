@@ -44,14 +44,14 @@ namespace WeixinTookeen.Client
         SendLogFrom from = null;
         public void SendMessageInit()
         {
-            ServiceRecordSvc svc = new ServiceRecordSvc();
-            var Authdata = svc.IsAuth();
-            if (Authdata.Code == ResultCodeEnums.AuthExpire)
-            {
-                MetroMessageBox.Show(this, Authdata.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                GetLoginQRCode();
-                return;
-            }
+            //ServiceRecordSvc svc = new ServiceRecordSvc();
+            //var Authdata = svc.IsAuth();
+            //if (Authdata.Code == ResultCodeEnums.AuthExpire)
+            //{
+            //    MetroMessageBox.Show(this, Authdata.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    GetLoginQRCode();
+            //    return;
+            //}
             this.BeginInvoke((Action)(delegate ()
             {
                 if (from == null)
@@ -125,6 +125,13 @@ namespace WeixinTookeen.Client
         private void SetText(List<MessageType> message, List<WXMesssage> wxMsgList)
         {
             var sendMsg = message.Where(a => a.SendType == "文本").FirstOrDefault();
+            MessageTypeServices svc = new MessageTypeServices();
+            var result = svc.SetMessgeSendCount(sendMsg.Id);
+            if (result.Code != ResultCodeEnums.success)
+            {
+                MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             if (null != sendMsg)
             {
                 WXMesssage msg = new WXMesssage();
@@ -142,6 +149,13 @@ namespace WeixinTookeen.Client
         {
             WXMesssage msg = new WXMesssage();
             var sendImage = message.Where(a => a.SendType == "图片").FirstOrDefault();
+            MessageTypeServices svc = new MessageTypeServices();
+            var result = svc.SetMessgeSendCount(sendImage.Id);
+            if (result.Code != ResultCodeEnums.success)
+            {
+                MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             if (null != sendImage)
             {
                 if (!File.Exists(sendImage.TxtContent))
@@ -170,6 +184,13 @@ namespace WeixinTookeen.Client
         {
             WXMesssage msg = new WXMesssage();
             var sendVideo = message.Where(a => a.SendType == "视频").FirstOrDefault();
+            MessageTypeServices svc = new MessageTypeServices();
+            var result = svc.SetMessgeSendCount(sendVideo.Id);
+            if (result.Code != ResultCodeEnums.success)
+            {
+                MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             if (null != sendVideo)
             {
                 if (!File.Exists(sendVideo.TxtContent))
@@ -378,7 +399,7 @@ namespace WeixinTookeen.Client
                                     user.Sex = contact["Sex"].ToString();
                                     user.Signature = contact["Signature"].ToString();
                                     user.ContactFlag = contact["ContactFlag"].ToString();
-                                    user.VerifyFlag = contact["VerifyFlag"].ToString();                                    
+                                    user.VerifyFlag = contact["VerifyFlag"].ToString();
                                     contact_all.Add(user);
                                 }
                             }
@@ -409,6 +430,7 @@ namespace WeixinTookeen.Client
             if (selectForm.ShowDialog() == DialogResult.OK)
             {
                 MessageType type = new MessageType();
+                type.Id = 0;
                 type.SendType = "文本";
                 type.TxtContent = SelectDataForm.returnValue;
                 BindGrad(type);
@@ -422,6 +444,7 @@ namespace WeixinTookeen.Client
             if (selectForm.ShowDialog() == DialogResult.OK)
             {
                 MessageType type = new MessageType();
+                type.Id = 0;
                 type.SendType = "图片";
                 type.TxtContent = SelectDataForm.returnValue;
                 BindGrad(type);
@@ -434,6 +457,7 @@ namespace WeixinTookeen.Client
             if (selectForm.ShowDialog() == DialogResult.OK)
             {
                 MessageType type = new MessageType();
+                type.Id = 0;
                 type.SendType = "视频";
                 type.TxtContent = SelectDataForm.returnValue;
                 BindGrad(type);
@@ -456,6 +480,7 @@ namespace WeixinTookeen.Client
                 {
                     MessageType msgType = new MessageType()
                     {
+                        Id = int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
                         SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
                         TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString()
                     };
@@ -488,20 +513,20 @@ namespace WeixinTookeen.Client
             cmbShi.DisplayMember = "Name";
             cmbShi.SelectedIndex = 0;
             ServiceRecordSvc svc = new ServiceRecordSvc();
-            var Authdata = svc.IsAuth();
-            ServiceRecord rec = (ServiceRecord)Authdata.Data;
-            lblDate.Text = rec.ExpireDate.GetDateTimeFormats('f')[0].ToString();
+            //var Authdata = svc.IsAuth();
+            //ServiceRecord rec = (ServiceRecord)Authdata.Data;
+            //lblDate.Text = rec.ExpireDate.GetDateTimeFormats('f')[0].ToString();
             MachineSvc mcSvc = new MachineSvc();
             var key = mcSvc.Get().MachineCode;
             lblMCCode.Text = key;
             lblUserName.Text = "软件试用期";
-            if (Authdata.Code == ResultCodeEnums.Auth)
-            {
-                lblUserName.Text = GetAESInfo.Get(rec.SurplusTotal, key);
-                lblAuthCartic.Visible = false;
-                txtAuthCard.Visible = false;
-                btnAuth.Visible = false;
-            }
+            //if (Authdata.Code == ResultCodeEnums.Auth)
+            // {
+            // lblUserName.Text = GetAESInfo.Get(rec.SurplusTotal, key);
+            lblAuthCartic.Visible = false;
+            txtAuthCard.Visible = false;
+            btnAuth.Visible = false;
+            //}
         }
 
         /// <summary>
@@ -516,6 +541,7 @@ namespace WeixinTookeen.Client
             {
                 MessageType msgType = new MessageType()
                 {
+                    Id = int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
                     SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
                     TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString()
                 };
@@ -555,7 +581,8 @@ namespace WeixinTookeen.Client
                     MessageType msgType = new MessageType()
                     {
                         SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
-                        TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString()
+                        TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString(),
+                         Id=int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
                     };
                     listMsgType.Add(msgType);
                 }
@@ -602,6 +629,7 @@ namespace WeixinTookeen.Client
             sevice.SetMessageRemote(data);
             ServiceRecordSvc svc = new ServiceRecordSvc();
             svc.SetRecord();
+            GridMessageContent.DataSource = sevice.GetNewMessageRemote();
         }
 
         private void cmbSheng_SelectedValueChanged(object sender, EventArgs e)

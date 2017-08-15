@@ -45,10 +45,8 @@
             this.metroLink1 = new MetroFramework.Controls.MetroLink();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.GridMessageContent = new MetroFramework.Controls.MetroGrid();
-            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.SendType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TxtContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.metroContextMenu1 = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.删除选中ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.添加文本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,18 +78,21 @@
             this.CheckGroup = new MetroFramework.Controls.MetroCheckBox();
             this.CheckFemale = new MetroFramework.Controls.MetroCheckBox();
             this.checkMale = new MetroFramework.Controls.MetroCheckBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SendType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TxtContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GridMessageContent)).BeginInit();
             this.metroContextMenu1.SuspendLayout();
             this.metroTabPage2.SuspendLayout();
             this.metroTabPage3.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // picQRCode
@@ -231,6 +232,16 @@
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 10;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.GridMessageContent);
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(312, 202);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "右键，选择发送消息类型";
+            // 
             // GridMessageContent
             // 
             this.GridMessageContent.AllowUserToAddRows = false;
@@ -252,6 +263,7 @@
             this.GridMessageContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.GridMessageContent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Check,
+            this.Id,
             this.SendType,
             this.TxtContent});
             this.GridMessageContent.ContextMenuStrip = this.metroContextMenu1;
@@ -284,36 +296,6 @@
             this.GridMessageContent.Size = new System.Drawing.Size(308, 175);
             this.GridMessageContent.TabIndex = 2;
             this.GridMessageContent.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridMessageContent_CellContentClick);
-            // 
-            // Check
-            // 
-            this.Check.Frozen = true;
-            this.Check.HeaderText = "选择";
-            this.Check.Name = "Check";
-            this.Check.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Check.Width = 40;
-            // 
-            // SendType
-            // 
-            this.SendType.DataPropertyName = "SendType";
-            this.SendType.Frozen = true;
-            this.SendType.HeaderText = "类型";
-            this.SendType.Name = "SendType";
-            this.SendType.ReadOnly = true;
-            this.SendType.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SendType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.SendType.Width = 40;
-            // 
-            // TxtContent
-            // 
-            this.TxtContent.DataPropertyName = "TxtContent";
-            this.TxtContent.Frozen = true;
-            this.TxtContent.HeaderText = "内容";
-            this.TxtContent.Name = "TxtContent";
-            this.TxtContent.ReadOnly = true;
-            this.TxtContent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.TxtContent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.TxtContent.Width = 240;
             // 
             // metroContextMenu1
             // 
@@ -714,15 +696,44 @@
             this.checkMale.UseSelectable = true;
             this.checkMale.UseStyleColors = true;
             // 
-            // groupBox3
+            // Check
             // 
-            this.groupBox3.Controls.Add(this.GridMessageContent);
-            this.groupBox3.Location = new System.Drawing.Point(3, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(312, 202);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "右键，选择发送消息类型";
+            this.Check.Frozen = true;
+            this.Check.HeaderText = "选择";
+            this.Check.Name = "Check";
+            this.Check.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Check.Width = 40;
+            // 
+            // Id
+            // 
+            this.Id.DataPropertyName = "Id";
+            this.Id.Frozen = true;
+            this.Id.HeaderText = "编号";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            this.Id.Width = 40;
+            // 
+            // SendType
+            // 
+            this.SendType.DataPropertyName = "SendType";
+            this.SendType.Frozen = true;
+            this.SendType.HeaderText = "类型";
+            this.SendType.Name = "SendType";
+            this.SendType.ReadOnly = true;
+            this.SendType.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SendType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.SendType.Width = 40;
+            // 
+            // TxtContent
+            // 
+            this.TxtContent.DataPropertyName = "TxtContent";
+            this.TxtContent.Frozen = true;
+            this.TxtContent.HeaderText = "内容";
+            this.TxtContent.Name = "TxtContent";
+            this.TxtContent.ReadOnly = true;
+            this.TxtContent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.TxtContent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.TxtContent.Width = 240;
             // 
             // FormMain
             // 
@@ -741,6 +752,7 @@
             this.groupBox1.PerformLayout();
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.GridMessageContent)).EndInit();
             this.metroContextMenu1.ResumeLayout(false);
             this.metroTabPage2.ResumeLayout(false);
@@ -750,7 +762,6 @@
             this.metroTabPage4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -800,10 +811,11 @@
         private System.Windows.Forms.ToolStripMenuItem 添加文本ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 添加图片ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 添加视频ToolStripMenuItem;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SendType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TxtContent;
         private MetroFramework.Controls.MetroLink metroLink3;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SendType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TxtContent;
     }
 }

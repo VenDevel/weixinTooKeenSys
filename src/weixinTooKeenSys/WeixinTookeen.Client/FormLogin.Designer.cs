@@ -33,7 +33,6 @@
             this.tabLogin = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
             this.btnLogin = new MetroFramework.Controls.MetroButton();
-            this.metroCheckBox1 = new MetroFramework.Controls.MetroCheckBox();
             this.txtPwd = new MetroFramework.Controls.MetroTextBox();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.txtUserName = new MetroFramework.Controls.MetroTextBox();
@@ -93,7 +92,6 @@
             // metroTabPage1
             // 
             this.metroTabPage1.Controls.Add(this.btnLogin);
-            this.metroTabPage1.Controls.Add(this.metroCheckBox1);
             this.metroTabPage1.Controls.Add(this.txtPwd);
             this.metroTabPage1.Controls.Add(this.metroLabel2);
             this.metroTabPage1.Controls.Add(this.txtUserName);
@@ -119,17 +117,6 @@
             this.btnLogin.Text = "登    录";
             this.btnLogin.UseSelectable = true;
             this.btnLogin.Click += new System.EventHandler(this.metroButton1_Click);
-            // 
-            // metroCheckBox1
-            // 
-            this.metroCheckBox1.AutoSize = true;
-            this.metroCheckBox1.Location = new System.Drawing.Point(20, 144);
-            this.metroCheckBox1.Name = "metroCheckBox1";
-            this.metroCheckBox1.Size = new System.Drawing.Size(75, 15);
-            this.metroCheckBox1.TabIndex = 6;
-            this.metroCheckBox1.Text = "记住密码";
-            this.metroCheckBox1.UseSelectable = true;
-            this.metroCheckBox1.UseStyleColors = true;
             // 
             // txtPwd
             // 
@@ -741,7 +728,6 @@
         private MetroFramework.Controls.MetroTabPage metroTabPage4;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroTextBox txtUserName;
-        private MetroFramework.Controls.MetroCheckBox metroCheckBox1;
         private MetroFramework.Controls.MetroTextBox txtPwd;
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroButton btnLogin;

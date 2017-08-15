@@ -43,9 +43,8 @@ namespace WeixinTookeen.Client
             }
             else
             {
-                this.Hide();
-                FormMain main = new FormMain();
-                main.Show();
+                this.DialogResult = DialogResult.OK;//关键:设置登陆成功状态  
+                this.Close();
             }
 
         }

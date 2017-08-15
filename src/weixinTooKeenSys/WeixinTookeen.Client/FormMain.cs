@@ -77,8 +77,7 @@ namespace WeixinTookeen.Client
 
         private void GetSendMessage()
         {
-            MessageTypeServices sevice = new MessageTypeServices();
-            List<MessageType> message = sevice.GetNewMessageRemote();
+            List<MessageType> message = GetGradMessage(false).Where(a=>a.Id!=0).ToList();
             if (message.Count <= 0)
             {
                 MetroMessageBox.Show(this, "未能获取到当前发送的信息，请设置好信息并点击保存按钮！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -125,15 +124,16 @@ namespace WeixinTookeen.Client
         private void SetText(List<MessageType> message, List<WXMesssage> wxMsgList)
         {
             var sendMsg = message.Where(a => a.SendType == "文本").FirstOrDefault();
-            MessageTypeServices svc = new MessageTypeServices();
-            var result = svc.SetMessgeSendCount(sendMsg.Id);
-            if (result.Code != ResultCodeEnums.success)
-            {
-                MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+
             if (null != sendMsg)
             {
+                MessageTypeServices svc = new MessageTypeServices();
+                var result = svc.SetMessgeSendCount(sendMsg.Id);
+                if (result.Code != ResultCodeEnums.success)
+                {
+                    MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 WXMesssage msg = new WXMesssage();
                 msg.Type = 1;
                 msg.Msg = WXFace.AddFace(sendMsg.TxtContent);
@@ -149,18 +149,18 @@ namespace WeixinTookeen.Client
         {
             WXMesssage msg = new WXMesssage();
             var sendImage = message.Where(a => a.SendType == "图片").FirstOrDefault();
-            MessageTypeServices svc = new MessageTypeServices();
-            var result = svc.SetMessgeSendCount(sendImage.Id);
-            if (result.Code != ResultCodeEnums.success)
-            {
-                MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
             if (null != sendImage)
             {
                 if (!File.Exists(sendImage.TxtContent))
                 {
                     MetroMessageBox.Show(this, "文件不存在，请选择好文件！！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                MessageTypeServices svc = new MessageTypeServices();
+                var result = svc.SetMessgeSendCount(sendImage.Id);
+                if (result.Code != ResultCodeEnums.success)
+                {
+                    MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 //先上传
@@ -184,18 +184,18 @@ namespace WeixinTookeen.Client
         {
             WXMesssage msg = new WXMesssage();
             var sendVideo = message.Where(a => a.SendType == "视频").FirstOrDefault();
-            MessageTypeServices svc = new MessageTypeServices();
-            var result = svc.SetMessgeSendCount(sendVideo.Id);
-            if (result.Code != ResultCodeEnums.success)
-            {
-                MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
             if (null != sendVideo)
             {
                 if (!File.Exists(sendVideo.TxtContent))
                 {
                     MetroMessageBox.Show(this, "文件不存在，请选择好文件！！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                MessageTypeServices svc = new MessageTypeServices();
+                var result = svc.SetMessgeSendCount(sendVideo.Id);
+                if (result.Code != ResultCodeEnums.success)
+                {
+                    MetroMessageBox.Show(this, result.Msg, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 WXServices wxServices = new WXServices();
@@ -465,32 +465,6 @@ namespace WeixinTookeen.Client
         }
 
         /// <summary>
-        /// 获取选中信息
-        /// </summary>
-        /// <returns></returns>
-        private List<MessageType> GetCheckMessage()
-        {
-            List<MessageType> listMsgType = new List<MessageType>();
-            int count = GridMessageContent.Rows.Count;
-            for (int i = 0; i < count; i++)
-            {
-                DataGridViewCheckBoxCell checkCell = (DataGridViewCheckBoxCell)GridMessageContent.Rows[i].Cells[0];
-                Boolean flag = Convert.ToBoolean(checkCell.Value);
-                if (flag == true)
-                {
-                    MessageType msgType = new MessageType()
-                    {
-                        Id = int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
-                        SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
-                        TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString()
-                    };
-                    listMsgType.Add(msgType);
-                }
-            }
-            return listMsgType;
-        }
-
-        /// <summary>
         /// 初始化窗体
         /// </summary>
         private void FromInit()
@@ -535,18 +509,7 @@ namespace WeixinTookeen.Client
         /// <param name="messageType"></param>
         private void BindGrad(MessageType messageType)
         {
-            List<MessageType> listMsgType = new List<MessageType>();
-            int count = GridMessageContent.Rows.Count;
-            for (int i = 0; i < count; i++)
-            {
-                MessageType msgType = new MessageType()
-                {
-                    Id = int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
-                    SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
-                    TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString()
-                };
-                listMsgType.Add(msgType);
-            }
+            List<MessageType> listMsgType = GetGradMessage(false);
             bool isAdd = true;
             foreach (var item in listMsgType)
             {
@@ -570,24 +533,42 @@ namespace WeixinTookeen.Client
         /// <param name="e"></param>
         private void 删除选中ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            GridMessageContent.DataSource = GetGradMessage(true);
+        }
+
+        /// <summary>
+        /// 获取grad中的数据
+        /// </summary>
+        /// <param name="isCheck"></param>
+        /// <returns></returns>
+        private List<MessageType> GetGradMessage(bool isCheck)
+        {
             List<MessageType> listMsgType = new List<MessageType>();
             int count = GridMessageContent.Rows.Count;
             for (int i = 0; i < count; i++)
             {
-                DataGridViewCheckBoxCell checkCell = (DataGridViewCheckBoxCell)GridMessageContent.Rows[i].Cells[0];
-                Boolean flag = Convert.ToBoolean(checkCell.Value);
-                if (flag == false)
+                MessageType msgType = new MessageType()
                 {
-                    MessageType msgType = new MessageType()
+                    SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
+                    TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString(),
+                    Id = int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
+                };
+                DataGridViewCheckBoxCell checkCell = (DataGridViewCheckBoxCell)GridMessageContent.Rows[i].Cells[0];
+                if (isCheck == true)
+                {
+                    Boolean flag = Convert.ToBoolean(checkCell.Value);
+                    if (flag == false)
                     {
-                        SendType = this.GridMessageContent.Rows[i].Cells[1].Value.ToString(),
-                        TxtContent = this.GridMessageContent.Rows[i].Cells[2].Value.ToString(),
-                         Id=int.Parse(this.GridMessageContent.Rows[i].Cells[3].Value.ToString()),
-                    };
+                        listMsgType.Add(msgType);
+                    }
+                }
+                else
+                {
                     listMsgType.Add(msgType);
                 }
             }
-            GridMessageContent.DataSource = listMsgType;
+            return listMsgType;
         }
 
         /// <summary>
@@ -621,7 +602,7 @@ namespace WeixinTookeen.Client
         private void metroButton1_Click(object sender, EventArgs e)
         {
             MessageTypeServices sevice = new MessageTypeServices();
-            var data = GetCheckMessage();
+            var data = GetGradMessage(true);
             if (data.Count <= 0)
             {
                 return;
